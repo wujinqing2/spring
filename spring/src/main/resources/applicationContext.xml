@@ -4,11 +4,135 @@
     xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd">
 
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+	    <property name="locations" value="jdbc.properties"/>
+	</bean>
+	
+	<!-- <bean id="dataSource" destroy-method="close"
+        class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+	    <property name="driverClassName" value="${jdbc.driverClassName}"/>
+	    <property name="url" value="${jdbc.url}"/>
+	    <property name="username" value="${jdbc.username}"/>
+	    <property name="password" value="${jdbc.password}"/>
+	</bean> -->
+
+	<bean id="commandManager" class="com.jin.spring.lesson04.CommandManager" />
+	
+
+
     <bean id="messageServiceImpl" class="com.jin.spring.lesson02.MessageServiceImpl">
         <!-- collaborators and configuration for this bean go here -->
     </bean>
-    <bean id="messageAction" class="com.jin.spring.lesson02.MessageAction">
+    <bean id="messageAction" class="com.jin.spring.lesson02.MessageAction" >
         <property name="messageService" ref="messageServiceImpl" />
     </bean>
-
+	
+	<bean id="serviceLocator" class="com.jin.spring.lesson03.DefaultServiceLocator">
+	</bean>
+	
+	<bean id="clientService" factory-bean="serviceLocator" factory-method="createClientServiceInstance"></bean>
+	
+	<bean id="theTargetBean" class="com.jin.spring.lesson03.TargetBean" />
+	
+	<!--
+	<bean id="theClientBean" class="com.jin.spring.lesson03.ClientBean" >
+		<property name="targetName">
+			<!- 这是一个字符串而不是引用 ->
+	        <idref bean="theTargetBean" />
+	    </property>
+	</bean>
+	-->
+	
+	
+	
+	
+	<bean id="moreComplexObject" class="com.jin.spring.lesson04.ComplexObject">
+    <!-- results in a setAdminEmails(java.util.Properties) call -->
+    <property name="adminEmails">
+        <props>
+            <prop key="administrator">administrator@example.org</prop>
+            <prop key="support">support@example.org</prop>
+            <prop key="development">development@example.org</prop>
+        </props>
+    </property>
+    <!-- results in a setSomeList(java.util.List) call -->
+    <property name="someList">
+        <list>
+            <value>a list element followed by a reference</value>
+           
+        </list>
+    </property>
+    <!-- results in a setSomeMap(java.util.Map) call -->
+    <property name="someMap">
+        <map>
+            <entry key="an entry" value="just some string"/>
+            <entry key ="a ref" value="myDataSource"/>
+        </map>
+    </property>
+    <!-- results in a setSomeSet(java.util.Set) call -->
+    <property name="someSet">
+        <set>
+            <value>just some string</value>
+           
+        </set>
+    </property>
+</bean>
+	
+	
+	<!-- 
+	<bean id="moreComplexObject" class="example.ComplexObject">
+    
+    <property name="adminEmails">
+        <props>
+            <prop key="administrator">administrator@example.org</prop>
+            <prop key="support">support@example.org</prop>
+            <prop key="development">development@example.org</prop>
+        </props>
+    </property>
+    
+    <property name="someList">
+        <list>
+            <value>a list element followed by a reference</value>
+            <ref bean="myDataSource" />
+        </list>
+    </property>
+    
+    <property name="someMap">
+        <map>
+            <entry key="an entry" value="just some string"/>
+            <entry key ="a ref" value-ref="myDataSource"/>
+        </map>
+    </property>
+    
+    <property name="someSet">
+        <set>
+            <value>just some string</value>
+            <ref bean="myDataSource" />
+        </set>
+    </property>
+</bean>
+-->
+	
+	
+	
+	<bean id="parent" abstract="true" class="com.jin.spring.lesson04.ParentObject" >
+        <property name="adminEmails">
+            <props>
+                <prop key="administrator">administrator@example.com</prop>
+                <prop key="support">support@example.com</prop>
+            </props>
+        </property>
+    </bean>
+    <bean id="child" parent="parent">
+        <property name="adminEmails">
+            <!-- the merge is specified on the child collection definition -->
+            <props merge="true">
+                <prop key="sales">sales@example.com</prop>
+                <prop key="support">support@example.co.uk</prop>
+            </props>
+        </property>
+    </bean>
+	
+	
+	
 </beans>
