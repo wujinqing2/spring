@@ -7,11 +7,8 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd">
 	
-	<bean id="autowiredApplicationContext" class="com.jin.spring.lesson06.AutowiredApplicationContext"> </bean>
-	<bean id="test" class="com.jin.spring.lesson06.Test"> </bean>
-	<bean id="resourceTest" class="com.jin.spring.lesson06.ResourceTest"> </bean>
-	
-	<context:annotation-config/>
-	
+	<context:component-scan base-package="com.jin.spring.lesson07, com.jin.spring.lesson08" > 
+		<!-- <context:include-filter type="annotation" expression=""/> -->
+	</context:component-scan>
 	
 </beans>

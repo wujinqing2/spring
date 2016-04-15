@@ -7,10 +7,9 @@ public class Application {
 	public static void main(String[] args) {
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext-lesson06.xml");
 		
-		AutowiredApplicationContext ctx = context.getBean(AutowiredApplicationContext.class);
+		ResourceTest ctx = context.getBean(ResourceTest.class);
 		
-		Test test = ctx.getBean(Test.class);
 		
-		test.msg();
+		ctx.test.msg();
 	}
 }
